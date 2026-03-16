@@ -144,3 +144,4 @@ dist
 lesson.ts
 *.db
 src/test-*.ts
+.sesmailerrc.json

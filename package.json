@@ -1,24 +1,41 @@
 {
   "name": "sesmailer",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Fast, lightweight transactional email for Node.js — powered by AWS SES",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "lint": "eslint src/",
     "format": "prettier --write src/",
     "dev": "tsx --env-file=.env src/index.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "keywords": ["email", "ses", "aws", "smtp", "transactional", "nodemailer"],
+  "author": "adeyinka-dev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adeyinka-dev/sesmailer"
+  },
+  "dependencies": {
+    "nodemailer": "^8.0.1"
+  },
+  "peerDependencies": {
+    "better-sqlite3": ">=11.0.0"
+  },
+  "peerDependenciesMeta": {
+    "better-sqlite3": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^25.3.3",
     "@types/nodemailer": "^7.0.11",
+    "better-sqlite3": "^12.6.2",
     "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
@@ -26,9 +43,5 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.1"
-  },
-  "dependencies": {
-    "better-sqlite3": "^12.6.2",
-    "nodemailer": "^8.0.1"
   }
 }

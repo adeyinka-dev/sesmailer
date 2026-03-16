@@ -15,10 +15,10 @@ export interface SendOptions {
   html: string;
   tag?: string;
   attachments?: Array<{
-    filename: string, 
+    filename: string;
     content: Buffer | string;
     contentType?: string;
-  }>
+  }>;
 }
 
 export function createMailer() {
@@ -26,13 +26,16 @@ export function createMailer() {
   const transport = createSESTransport(config);
   const rateLimiter = new RateLimiter(config.rateLimit, config.rateLimit);
   const db = initDatabase();
-  const analyticsServer = config.analyticsPort 
-  ? startAnalytics(config.analyticsPort, db, config.analyticsApiKey) 
-  : null;
+  const analyticsServer =
+    config.analyticsPort && db
+      ? startAnalytics(config.analyticsPort, db, config.analyticsApiKey)
+      : null;
   const send = async (options: SendOptions) => {
     await rateLimiter.consume();
     const logTo = config.maskEmails ? maskEmail(options.to) : options.to;
-    const logFrom = config.maskEmails ? maskEmail(options.from ?? config.from) : (options.from ?? config.from);
+    const logFrom = config.maskEmails
+      ? maskEmail(options.from ?? config.from)
+      : (options.from ?? config.from);
     try {
       validateSendOptions(options);
       const info = await transport.sendMail({
@@ -43,25 +46,27 @@ export function createMailer() {
         html: options.html,
         attachments: options.attachments,
       });
-      logEmail(db, {
-        messageId: info.messageId,
-        to: logTo,
-        from: logFrom,
-        subject: options.subject,
-        status: 'sent',
-        tag: options.tag,
-      });
+      if (db)
+        logEmail(db, {
+          messageId: info.messageId,
+          to: logTo,
+          from: logFrom,
+          subject: options.subject,
+          status: 'sent',
+          tag: options.tag,
+        });
       return { messageId: info.messageId, status: 'sent' as const };
     } catch (error) {
-      logEmail(db, {
-        messageId: null,
-        to: logTo,
-        from: logFrom,
-        subject: options.subject,
-        status: 'failed',
-        error: (error as Error).message,
-        tag: options.tag,
-      });
+      if (db)
+        logEmail(db, {
+          messageId: null,
+          to: logTo,
+          from: logFrom,
+          subject: options.subject,
+          status: 'failed',
+          error: (error as Error).message,
+          tag: options.tag,
+        });
       return { messageId: null, status: 'failed' as const, error: (error as Error).message };
     }
   };
@@ -80,7 +85,7 @@ export function createMailer() {
     },
     close: () => {
       transport.close();
-      db.close();
+      if (db) db.close();
       analyticsServer?.close();
     },
   };

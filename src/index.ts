@@ -1,3 +1,3 @@
-export const hello = (): string => 'sesmailer';
-
-console.log('First Line of code!');
+export { createMailer } from './mailer.js';
+export type { SendOptions } from './mailer.js';
+export type { SESMailerConfig } from './config.js';

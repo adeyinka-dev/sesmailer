@@ -2,11 +2,7 @@ import http from 'http';
 import { handleRoutes } from './route';
 import { type Database as DatabaseType } from 'better-sqlite3';
 
-export function startAnalytics(
-  port: number,
-  db: DatabaseType,
-  apiKey?: string,
-) {
+export function startAnalytics(port: number, db: DatabaseType, apiKey?: string) {
   const server = http.createServer((req, res) => {
     if (apiKey) {
       const requestKey = req.headers['x-api-key'];
