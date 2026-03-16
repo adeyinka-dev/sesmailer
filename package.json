@@ -1,5 +1,5 @@
 {
-  "name": "sesmailer",
+  "name": "sesmailer-js",
   "version": "0.1.0",
   "description": "Fast, lightweight transactional email for Node.js — powered by AWS SES",
   "main": "dist/index.js",

@@ -1,10 +1,10 @@
-import { sendOptions } from '../mailer';
+import { SendOptions } from '../mailer';
 
 function isEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-export function validateSendOptions(options: sendOptions) {
+export function validateSendOptions(options: SendOptions) {
   if (!options.to || !isEmail(options.to)) {
     throw new Error("sesmailer: 'to' must be a valid email address");
   }
