@@ -4,6 +4,7 @@ import { initDatabase } from './db';
 import { logEmail } from './logger';
 import { RateLimiter } from './rate-limiter';
 import { createSESTransport } from './transport';
+import { maskEmail } from './utils/mask';
 import { validateSendOptions } from './utils/validate';
 
 export interface SendOptions {
@@ -30,6 +31,8 @@ export function createMailer() {
   : null;
   const send = async (options: SendOptions) => {
     await rateLimiter.consume();
+    const logTo = config.maskEmails ? maskEmail(options.to) : options.to;
+    const logFrom = config.maskEmails ? maskEmail(options.from ?? config.from) : (options.from ?? config.from);
     try {
       validateSendOptions(options);
       const info = await transport.sendMail({
@@ -42,8 +45,8 @@ export function createMailer() {
       });
       logEmail(db, {
         messageId: info.messageId,
-        to: options.to,
-        from: options.from ?? config.from,
+        to: logTo,
+        from: logFrom,
         subject: options.subject,
         status: 'sent',
         tag: options.tag,
@@ -52,8 +55,8 @@ export function createMailer() {
     } catch (error) {
       logEmail(db, {
         messageId: null,
-        to: options.to,
-        from: options.from ?? config.from,
+        to: logTo,
+        from: logFrom,
         subject: options.subject,
         status: 'failed',
         error: (error as Error).message,
