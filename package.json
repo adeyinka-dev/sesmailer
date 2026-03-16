@@ -1,0 +1,34 @@
+{
+  "name": "sesmailer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "lint": "eslint src/",
+    "format": "prettier --write src/",
+    "dev": "tsx --env-file=.env src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.3.3",
+    "@types/nodemailer": "^7.0.11",
+    "eslint": "^10.0.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.6.2",
+    "nodemailer": "^8.0.1"
+  }
+}
